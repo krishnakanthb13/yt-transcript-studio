@@ -1,0 +1,10 @@
+# Build artifacts
+*.zip
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/
+node_modules/

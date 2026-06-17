@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Transcript Studio for YouTube</title>
+  <link rel="stylesheet" href="panel.css" />
+</head>
+<body>
+  <!-- thin playback progress line (top of panel) -->
+  <div class="progress" id="progress"><span id="progressBar"></span></div>
+
+  <header class="hdr">
+    <div class="logo">📝</div>
+    <div class="brand">
+      <h1>Transcript Studio</h1>
+      <span class="brand-sub">for YouTube</span>
+    </div>
+    <button class="icon-btn" id="aiBtn" title="AI summary ✨">✨</button>
+    <button class="icon-btn" id="settingsBtn" title="Settings">⚙️</button>
+    <button class="icon-btn" id="themeBtn" title="Theme">🌗</button>
+    <button class="icon-btn heart" id="supportBtn" title="Support this free tool 💛">💛</button>
+  </header>
+
+  <section class="controls">
+    <div class="video-meta" id="videoMeta"></div>
+    <div class="field">
+      <label for="langSelect">Caption language</label>
+      <div class="selects">
+        <select id="langSelect"><option>Open a YouTube video…</option></select>
+        <select id="translateSelect" title="Translate to…"><option value="">No translation</option></select>
+      </div>
+    </div>
+    <button class="btn-primary" id="fetchBtn" disabled>
+      <span class="i">⬇️</span><span id="fetchLabel">Get transcript</span>
+    </button>
+  </section>
+
+  <section class="toolbar" id="toolbar">
+    <div class="search-wrap">
+      <span class="search-ico">🔎</span>
+      <input type="text" id="searchInput" placeholder="Search transcript…" autocomplete="off" spellcheck="false" />
+      <span class="search-count" id="searchCount"></span>
+      <button class="mini" id="searchPrev" title="Previous match (Shift+Enter)">▲</button>
+      <button class="mini" id="searchNext" title="Next match (Enter)">▼</button>
+    </div>
+    <div class="chips">
+      <button class="chip on" id="tgTimestamps" title="Show timestamps">🕒</button>
+      <button class="chip" id="tgFollow" title="Follow along with the video">🎯 Follow</button>
+      <button class="chip" id="tgParagraph" title="Merge into readable paragraphs">¶ Paragraphs</button>
+      <button class="chip" id="tgClean" title="Hide [Music] / [Applause] cues">🎵 Hide SFX</button>
+      <button class="chip" id="tgHighlights" title="Show only highlighted lines">⭐ Saved</button>
+      <button class="chip" id="tgSmaller" title="Smaller text">A−</button>
+      <button class="chip" id="tgBigger" title="Larger text">A+</button>
+    </div>
+  </section>
+
+  <section class="export" id="exportBar">
+    <select id="formatSelect" title="Export format"></select>
+    <button class="btn-ghost" id="copyBtn" title="Copy transcript">📋 Copy</button>
+    <button class="btn-ghost" id="downloadBtn" title="Download file">💾 Save</button>
+  </section>
+
+  <main class="scroll" id="scroll">
+    <div class="state" id="state">
+      <div class="big">🎬</div>
+      <h2>Open a YouTube video</h2>
+      <p>Play any video or Short, then hit <b>Get transcript</b>. Pick a language,
+         translate, search, summarize with AI, and export.</p>
+    </div>
+  </main>
+
+  <footer class="foot" id="foot">
+    <div class="stats" id="stats"></div>
+    <a class="support-link" id="footSupport" href="#" target="_blank" rel="noopener">💛 Support</a>
+  </footer>
+
+  <!-- AI summary overlay -->
+  <div class="overlay" id="aiOverlay" hidden>
+    <div class="sheet">
+      <div class="sheet-hdr">
+        <h3>✨ AI Summary</h3>
+        <button class="icon-btn" id="aiClose" title="Close">✕</button>
+      </div>
+      <div class="sheet-actions">
+        <select id="aiMode" title="What to generate">
+          <option value="summary">Summary + key points</option>
+          <option value="bullets">Bullet outline</option>
+          <option value="chapters">Auto chapters (timestamps)</option>
+          <option value="takeaways">Action items / takeaways</option>
+        </select>
+        <button class="btn-primary sm" id="aiRun">Generate</button>
+      </div>
+      <div class="sheet-body" id="aiBody">
+        <p class="hint">Generates from the loaded transcript using your own Google
+           Gemini API key (stored locally). Add a key in ⚙️ Settings.</p>
+      </div>
+      <div class="sheet-foot">
+        <button class="btn-ghost sm" id="aiCopy">📋 Copy</button>
+        <button class="btn-ghost sm" id="aiSave">💾 Summary</button>
+        <button class="btn-ghost sm" id="aiSaveBoth" title="Summary + full transcript">💾 Both</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings overlay -->
+  <div class="overlay" id="settingsOverlay" hidden>
+    <div class="sheet">
+      <div class="sheet-hdr">
+        <h3>⚙️ Settings</h3>
+        <button class="icon-btn" id="settingsClose" title="Close">✕</button>
+      </div>
+      <div class="sheet-body">
+        <label class="opt">
+          <input type="checkbox" id="setAutoFetch" />
+          <span>Auto-fetch transcript when I open a video</span>
+        </label>
+
+        <div class="opt-block">
+          <label for="setAiKey">Google Gemini API key <span class="muted">(optional, for AI features)</span></label>
+          <input type="password" id="setAiKey" placeholder="AIza…" autocomplete="off" spellcheck="false" />
+          <div class="row-gap">
+            <select id="setAiModel" title="Gemini model">
+              <option value="gemini-3.5-flash">Gemini 3.5 Flash (recommended)</option>
+              <option value="gemini-3.1-flash-lite">Gemini 3.1 Flash-Lite (fastest)</option>
+            </select>
+            <button class="btn-ghost sm" id="setAiSave">Save</button>
+            <button class="btn-ghost sm" id="setAiClear">Clear</button>
+          </div>
+          <p class="hint">Get a free key at <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a>.
+             Your key and transcripts never leave your browser except the direct call to Google.</p>
+        </div>
+
+        <div class="opt-block">
+          <p class="muted">Keyboard: <b>Ctrl/⌘+Shift+Y</b> open · <b>/</b> search · <b>Enter</b> next match · <b>j/k</b> move lines.</p>
+        </div>
+      </div>
+      <div class="sheet-foot center">
+        <a class="support-link" href="https://krishnakanthb13.github.io/S/" target="_blank" rel="noopener">💛 Support this free, open-source tool</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="lib/captions.js"></script>
+  <script src="panel.js"></script>
+</body>
+</html>
