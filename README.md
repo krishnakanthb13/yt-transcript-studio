@@ -173,8 +173,12 @@ To publish to the Chrome Web Store, see **[PUBLISH.md](PUBLISH.md)**.
 
 ## 🤝 Support & license
 
-Free and **open source** under the [GPLv3 License](LICENSE). If it saves you time:
+**Transcript Studio for YouTube** — Copyright (C) 2026 Krishna Kanth B.
+This program is free software: you can redistribute it and/or modify it under the
+terms of the **GNU General Public License v3** (or, at your option, any later
+version) as published by the Free Software Foundation. It is distributed WITHOUT
+ANY WARRANTY. See the full [LICENSE](LICENSE) or <https://www.gnu.org/licenses/>.
+
+If it saves you time:
 **[krishnakanthb13.github.io/S](https://krishnakanthb13.github.io/S/)** —
 GitHub Sponsors · Buy Me a Coffee · PayPal · UPI.
-
-© 2026 Krishna Kanth B
